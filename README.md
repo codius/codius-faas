@@ -36,6 +36,13 @@ Update the values in `config.env` for your cluster, then run:
 KUBECONFIG=/path/to/your/kubeconfig ./install.sh
 ```
 
+### Components
+
+- modified [openfaas-cloud](https://github.com/wilsonianb/openfaas-cloud)
+- modified [faas-netes](https://github.com/wilsonianb/faas-netes/)
+- [receipt-verifier](https://github.com/coilhq/receipt-verifier)
+- [402-page](https://github.com/wilsonianb/402-page)
+
 ### Function Invocation Flow
 
 ![](wm-ofc.png)

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receipt-verifier
+spec:
+  template:
+    spec:
+      containers:
+      - name: receipt-verifier
+        env:
+        - name: REDIS_URI
+          value: redis://127.0.0.1:6379/
+        - name: SPSP_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: web-monetization
+              key: payment_pointer_url
+      - name: redis
+        image: redis
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping

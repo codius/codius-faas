@@ -1,0 +1,8 @@
+kind: Profile
+apiVersion: openfaas.com/v1
+metadata:
+  name: ofc-workload
+  namespace: openfaas
+spec:
+  runtimeClassName: $(RuntimeClass)
+  dnsPolicy: Default

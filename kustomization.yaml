@@ -1,0 +1,30 @@
+bases:
+- ./base
+
+configMapGenerator:
+- name: web-monetization
+  namespace: openfaas
+  env: config.env
+
+vars:
+- name: RootDomain
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: web-monetization
+  fieldref:
+    fieldpath: data.root_domain
+- name: RuntimeClass
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: web-monetization
+  fieldref:
+    fieldpath: data.runtime_class
+- name: GithubAppUrl
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: web-monetization
+  fieldref:
+    fieldpath: data.github_app_url

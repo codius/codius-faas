@@ -1,0 +1,13 @@
+bases:
+- ../remote
+
+resources:
+- audit-event-net-policy.yaml
+- github-app-configmap.yaml
+- metrics-net-policy.yaml
+- profile.yaml
+- wm-ingress.yaml
+- workload-net-policy.yaml
+
+configurations:
+- kustomizeconfig.yaml

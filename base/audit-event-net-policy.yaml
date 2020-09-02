@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: audit-event
+  namespace: openfaas
+spec:
+  policyTypes:
+    - Ingress
+  podSelector:
+    matchLabels:
+      app: gateway
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          role: openfaas-fn
+      podSelector:
+        matchLabels:
+          faas_function: audit-event

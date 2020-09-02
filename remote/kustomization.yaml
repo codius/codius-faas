@@ -1,0 +1,11 @@
+namespace: openfaas
+
+bases:
+- github.com/wilsonianb/402-page/config/base?ref=main
+- github.com/coilhq/receipt-verifier/config/base?ref=main
+- github.com/wilsonianb/openfaas-cloud/yaml/core
+
+patchesStrategicMerge:
+- 402_page_env_patch.yaml
+- edge_auth_env_patch.yaml
+- receipt_verifier_env_patch.yaml

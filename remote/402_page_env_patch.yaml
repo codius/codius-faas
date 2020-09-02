@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 402-page
+spec:
+  template:
+    spec:
+      containers:
+      - name: 402-page
+        image: wilsonianbcoil/402-page
+        imagePullPolicy: Always
+        env:
+        - name: PAYMENT_POINTER
+          value: $system.$(RootDomain)
+        - name: BALANCE_ID_HEADER
+          value: Host
+        - name: BALANCE_ID_REGEX
+          value: "(?<id>.*).$(RootDomain)"
+        - name: RECEIPT_VERIFIER_URI
+          value: https://system.$(RootDomain)
+        - name: REQUIRED_BALANCE
+          valueFrom:
+            configMapKeyRef:
+              name: web-monetization
+              key: request_price

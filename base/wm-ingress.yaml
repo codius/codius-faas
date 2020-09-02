@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-monetization
+  namespace: openfaas
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  labels:
+    app: faas-netesd
+spec:
+  tls:
+  - hosts:
+    - "*.$(RootDomain)"
+    secretName: wildcard-$(RootDomain)-cert
+  rules:
+  - host: '*.$(RootDomain)'
+    http:
+      paths:
+      - path: /_next
+        backend:
+          serviceName: svc-402-page
+          servicePort: 3000
+      - path: /.well-known/pay
+        backend:
+          serviceName: receipt-verifier
+          servicePort: 3001
+      - path: /balances/.*:creditReceipt
+        backend:
+          serviceName: receipt-verifier
+          servicePort: 3000

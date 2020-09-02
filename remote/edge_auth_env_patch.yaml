@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-auth
+spec:
+  template:
+    spec:
+      containers:
+      - name: edge-auth
+        image: wilsonianbcoil/edge-auth:pr-1-merge
+        imagePullPolicy: Always
+        env:
+        - name: receipt_verifier_uri
+          value: http://receipt-verifier.openfaas:3000
+        - name: request_price
+          valueFrom:
+            configMapKeyRef:
+              name: web-monetization
+              key: request_price

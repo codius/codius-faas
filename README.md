@@ -35,3 +35,7 @@ Update the values in `config.env` for your cluster, then run:
 ```
 KUBECONFIG=/path/to/your/kubeconfig ./install.sh
 ```
+
+### Function Invocation Flow
+
+![](wm-ofc.png)

@@ -79,6 +79,15 @@ kubectl patch -n openfaas-fn deploy/system-dashboard -p '
                 "name": "system-dashboard"
               }
             }
+          },
+          {
+            "name": "payment_pointer",
+            "valueFrom": {
+              "configMapKeyRef": {
+                "key": "payment_pointer",
+                "name": "system-dashboard"
+              }
+            }
           }],
           "volumeMounts": [{
             "name": "pubcert",

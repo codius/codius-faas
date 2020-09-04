@@ -37,6 +37,8 @@ kubectl patch -n openfaas deploy/gateway -p '
 
 kubectl patch serviceaccount -n openfaas-fn default -p '{"automountServiceAccountToken": false}'
 
+cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem base/
+
 kubectl apply -k .
 
 kubectl annotate ingress -n openfaas openfaas-ingress nginx.ingress.kubernetes.io/custom-http-errors=402 nginx.ingress.kubernetes.io/default-backend=svc-402-page
@@ -74,10 +76,25 @@ kubectl patch -n openfaas-fn deploy/system-dashboard -p '
             "valueFrom": {
               "configMapKeyRef": {
                 "key": "github_app_url",
-                "name": "github-app"
+                "name": "system-dashboard"
               }
             }
+          }],
+          "volumeMounts": [{
+            "name": "pubcert",
+            "mountPath": "/home/app/function/dist/pub-cert.pem",
+            "subPath": "pub-cert.pem"
           }]
+        }],
+        "volumes": [{
+          "name": "pubcert",
+          "configMap": {
+            "name": "system-dashboard",
+            "items": [{
+              "key": "pub-cert.pem",
+              "path": "pub-cert.pem"
+            }]
+          }
         }]
       }
     }

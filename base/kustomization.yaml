@@ -3,11 +3,21 @@ bases:
 
 resources:
 - audit-event-net-policy.yaml
-- github-app-configmap.yaml
 - metrics-net-policy.yaml
 - profile.yaml
 - wm-ingress.yaml
 - workload-net-policy.yaml
+
+configMapGenerator:
+- name: system-dashboard
+  namespace: openfaas-fn
+  literals:
+  - github_app_url=$(GithubAppUrl)
+  files:
+  - pub-cert.pem
+
+generatorOptions:
+  disableNameSuffixHash: true
 
 configurations:
 - kustomizeconfig.yaml

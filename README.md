@@ -19,6 +19,7 @@ kubectl apply -k github.com/wilsonianb/calico-k3s
 </details>
 
 - Skip the [Setup your access control](https://github.com/openfaas-incubator/ofc-bootstrap/blob/master/USER_GUIDE.md#setup-your-access-control) and [Use authz](https://github.com/openfaas-incubator/ofc-bootstrap/blob/master/USER_GUIDE.md#use-authz-recommended) steps
+- Set [`scale_to_zero`](https://github.com/openfaas-incubator/ofc-bootstrap/blob/master/USER_GUIDE.md#enable-scaling-to-zero) to `true`
 - Set [`network_policies`](https://github.com/openfaas-incubator/ofc-bootstrap/blob/master/USER_GUIDE.md#toggle-network-policies-recommended) to `true`
 
 #### Function isolation

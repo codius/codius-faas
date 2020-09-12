@@ -37,6 +37,12 @@ kubectl patch -n openfaas deploy/gateway -p '
 
 kubectl patch serviceaccount -n openfaas-fn default -p '{"automountServiceAccountToken": false}'
 
+export PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath='{.data.basic-auth-password}' | base64 --decode | openssl passwd -crypt -stdin)
+
+kubectl create secret generic ingress-basic-auth \
+ --from-literal=admin=$PASSWORD --namespace openfaas \
+ --dry-run=client -o yaml | kubectl apply -f -
+
 cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem base/
 
 kubectl apply -k .

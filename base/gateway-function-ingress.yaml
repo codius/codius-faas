@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: openfaas
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: ingress-basic-auth
+    nginx.ingress.kubernetes.io/auth-secret-type: auth-map
+    nginx.ingress.kubernetes.io/auth-realm: "Restricted"
+  labels:
+    app: faas-netesd
+spec:
+  tls:
+  - hosts:
+    - "*.$(RootDomain)"
+    secretName: wildcard-$(RootDomain)-cert
+  rules:
+  - host: gateway.$(RootDomain)
+    http:
+      paths:
+      - path: /function
+        backend:
+          serviceName: gateway
+          servicePort: 8080

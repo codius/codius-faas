@@ -1,0 +1,7 @@
+[[constraint]]
+  name = "github.com/openfaas/openfaas-cloud"
+  version = "0.14.1"
+
+[prune]
+  go-tests = true
+  unused-packages = true

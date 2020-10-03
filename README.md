@@ -48,6 +48,7 @@ KUBECONFIG=/path/to/your/kubeconfig ./install.sh
 - modified [faas-netes](https://github.com/wilsonianb/faas-netes/)
 - [receipt-verifier](https://github.com/coilhq/receipt-verifier)
 - [402-page](https://github.com/wilsonianb/402-page)
+- [billing](https://github.com/wilsonianb/wm-ofc/tree/main/billing) function
 
 ### Function Invocation Flow
 

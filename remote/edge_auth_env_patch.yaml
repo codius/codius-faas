@@ -10,10 +10,5 @@ spec:
         image: wilsonianbcoil/edge-auth:pr-1-merge
         imagePullPolicy: Always
         env:
-        - name: receipt_verifier_uri
-          value: http://receipt-verifier.openfaas:3000
-        - name: request_price
-          valueFrom:
-            configMapKeyRef:
-              name: web-monetization
-              key: request_price
+        - name: gateway_url
+          value: http://gateway.openfaas:8080

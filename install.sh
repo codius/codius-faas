@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -e
+
 kubectl set env -n openfaas-fn deploy/system-github-event validate_customers=false
 
 kubectl patch -n openfaas deploy/edge-router -p '
@@ -47,7 +51,7 @@ cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem base
 
 kubectl apply -k .
 
-kubectl annotate ingress -n openfaas openfaas-ingress nginx.ingress.kubernetes.io/custom-http-errors=402 nginx.ingress.kubernetes.io/default-backend=svc-402-page
+kubectl annotate ingress -n openfaas openfaas-ingress nginx.ingress.kubernetes.io/custom-http-errors=402 nginx.ingress.kubernetes.io/default-backend=svc-402-page --overwrite=true
 
 kubectl patch -n openfaas-fn deploy/buildshiprun -p '
 {
@@ -115,3 +119,14 @@ kubectl patch -n openfaas-fn deploy/system-dashboard -p '
     }
   }
 }'
+
+export PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
+
+trap 'kill $(jobs -p)' SIGINT SIGTERM EXIT
+
+kubectl port-forward -n openfaas deploy/gateway 31112:8080 &
+sleep 2
+
+export OPENFAAS_URL=http://127.0.0.1:31112
+echo -n $PASSWORD | faas-cli login --username admin --password-stdin
+faas-cli deploy -f ./stack.yml

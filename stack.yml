@@ -1,0 +1,23 @@
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+
+functions:
+  billing:
+    lang: go
+    handler: ./billing
+    image: wilsonianbcoil/system-billing
+    labels:
+      openfaas-cloud: "1"
+      role: openfaas-system
+      com.openfaas.scale.zero: false
+    environment_file:
+      - billing_config.yml
+    environment:
+      gateway_url: "http://gateway.openfaas:8080/"
+      balances_url: "http://receipt-verifier.openfaas:3000"
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 32Mi
+      cpu: 50m

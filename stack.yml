@@ -14,8 +14,14 @@ functions:
     environment_file:
       - billing_config.yml
     environment:
-      gateway_url: "http://gateway.openfaas:8080/"
       balances_url: "http://receipt-verifier.openfaas:3000"
+      basic_auth: true
+      gateway_url: "http://gateway.openfaas:8080/"
+      secret_mount_path: /var/openfaas/secrets
+      write_debug: true
+    secrets:
+      - basic-auth-user
+      - basic-auth-password
     limits:
       memory: 128Mi
     requests:

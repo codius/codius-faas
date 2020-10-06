@@ -39,6 +39,8 @@ kubectl patch -n openfaas deploy/gateway -p '
   }
 }'
 
+kubectl set env -n openfaas deploy/gateway --containers="gateway" faas_prometheus_host=prometheus.openfaas
+
 kubectl patch serviceaccount -n openfaas-fn default -p '{"automountServiceAccountToken": false}'
 
 export PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath='{.data.basic-auth-password}' | base64 --decode | openssl passwd -crypt -stdin)

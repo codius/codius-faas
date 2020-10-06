@@ -6,7 +6,7 @@ It takes function's name (i.e. `myFunction` \[required\]) from a query and is in
 http://gateway-url:8080/function/billing?function=myFunction
 
 - queries [receipt-verifier](https://github.com/coilhq/receipt-verifier) for the function's total amount paid
-- queries the [metrics](https://github.com/openfaas/openfaas-cloud/tree/master/metrics) function for the total number of funciton invocations
+- queries the [gateway](https://github.com/openfaas/faas/blob/master/gateway/README.md) for the total number of function invocations
 - returns a JSON response of type:
 
 ```json
@@ -21,7 +21,7 @@ http://gateway-url:8080/function/billing?function=myFunction
 All environment variables are required.
 
 | Environment Variable        | Description |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `gateway_url`               | Cluster-internal URL of the OpenFaaS gateway service. |
 | `balances_url`              | Root URI of the [receipt verifier](https://github.com/coilhq/receipt-verifier)'s `balances` API. |
 | `cost_per_unit_invocations` | Cost per `unit_invocations` for function invocations denominated in the host's asset (code and scale). |

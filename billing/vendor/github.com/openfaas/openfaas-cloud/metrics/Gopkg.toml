@@ -1,7 +1,0 @@
-[[constraint]]
-  name = "github.com/openfaas/faas"
-  version = "0.18.10"
-
-[prune]
-  go-tests = true
-  unused-packages = true

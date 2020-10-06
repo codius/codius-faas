@@ -23,3 +23,26 @@ functions:
     requests:
       memory: 32Mi
       cpu: 50m
+  revshare:
+    lang: go
+    handler: ./revshare
+    image: wilsonianbcoil/system-revshare
+    labels:
+      openfaas-cloud: "1"
+      role: openfaas-system
+      com.openfaas.scale.zero: false
+    environment_file:
+      - revshare_config.yml
+    environment:
+      basic_auth: true
+      gateway_url: "http://gateway.openfaas:8080/"
+      secret_mount_path: /var/openfaas/secrets
+      write_debug: true
+    secrets:
+      - basic-auth-user
+      - basic-auth-password
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 32Mi
+      cpu: 50m

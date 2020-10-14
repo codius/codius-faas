@@ -8,8 +8,8 @@ type ScaleServiceRequest struct {
 	Replicas    uint64 `json:"replicas"`
 }
 
-// InfoResponse provides information about the underlying provider
-type InfoResponse struct {
+// InfoRequest provides information about the underlying provider
+type InfoRequest struct {
 	Provider      string          `json:"provider"`
 	Version       ProviderVersion `json:"version"`
 	Orchestration string          `json:"orchestration"`

@@ -15,13 +15,9 @@ functions:
       - billing_config.yml
     environment:
       balances_url: "http://receipt-verifier.openfaas:3000"
-      basic_auth: true
-      gateway_url: "http://gateway.openfaas:8080/"
-      secret_mount_path: /var/openfaas/secrets
+      prometheus_host: prometheus.openfaas
+      prometheus_port: 9090
       write_debug: true
-    secrets:
-      - basic-auth-user
-      - basic-auth-password
     limits:
       memory: 128Mi
     requests:

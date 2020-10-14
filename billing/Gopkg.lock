@@ -2,97 +2,151 @@
 
 
 [[projects]]
-  digest = "1:871b7cfa5fe18bfdbd4bf117c166c3cff8d3b61c8afe4e998b5b8ac0c160ca24"
-  name = "github.com/alexellis/hmac"
-  packages = ["."]
+  digest = "1:d6afaeed1502aa28e80a4ed0981d570ad91b2579193404256ce672ed0a609e0d"
+  name = "github.com/beorn7/perks"
+  packages = ["quantile"]
   pruneopts = "UT"
-  revision = "d5d71edd7bc74eb6ae4b99eccc6bda738435f43f"
-  version = "1.2"
+  revision = "37c8de3658fcb183f997c4e13e8337516ab753e6"
+  version = "v1.0.1"
 
 [[projects]]
-  digest = "1:c150032ad5f0d37e884ce6428425292f1f866fd9c3fc4661a1ca539fda85460c"
-  name = "github.com/drone/envsubst"
+  digest = "1:4a32eb57407190eced21a21abee9ce4d4ab6f0bf113ca61cb1cb2d549a65c985"
+  name = "github.com/golang/protobuf"
   packages = [
-    ".",
-    "parse",
-    "path",
+    "proto",
+    "ptypes",
+    "ptypes/any",
+    "ptypes/duration",
+    "ptypes/timestamp",
   ]
   pruneopts = "UT"
-  revision = "5a78055244d6b899c2a2eb158c8454f548af9ab2"
-  version = "v1.0.2"
+  revision = "d04d7b157bb510b1e0c10132224b616ac0e26b17"
+  version = "v1.4.2"
 
 [[projects]]
-  digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
-  name = "github.com/mitchellh/go-homedir"
-  packages = ["."]
+  digest = "1:ff5ebae34cfbf047d505ee150de27e60570e8c394b3b8fdbb720ff6ac71985fc"
+  name = "github.com/matttproud/golang_protobuf_extensions"
+  packages = ["pbutil"]
   pruneopts = "UT"
-  revision = "af06845cf3004701891bf4fdb884bfe4920b3727"
-  version = "v1.1.0"
+  revision = "c12348ce28de40eed0136aa2b644d0ee0650e56c"
+  version = "v1.0.1"
 
 [[projects]]
-  digest = "1:cdf3df431e70077f94e14a99305808e3d13e96262b4686154970f448f7248842"
+  digest = "1:fcfecdc8cb0613331bc7572d346e205f652e66e6c2935df0034510464d9d6723"
   name = "github.com/openfaas/faas"
-  packages = ["gateway/requests"]
+  packages = ["gateway/metrics"]
   pruneopts = "UT"
   revision = "11ff356ccea32b89b9da556c18305cd7c5ea9ba5"
   version = "0.18.18"
 
 [[projects]]
-  digest = "1:d31dda0d21ab403ff0d119da18083120d31855b466948b89f48a3aff4587e553"
-  name = "github.com/openfaas/faas-cli"
-  packages = [
-    "config",
-    "proxy",
-    "schema/store/v2",
-    "stack",
-  ]
-  pruneopts = "UT"
-  revision = "c12d57c39ac4cc6eef3c9bba2fb45113d882432f"
-  version = "0.12.14"
-
-[[projects]]
-  digest = "1:e9125ccb8c5b8257328614d84a71b9bd9c21203b12a06ce0e6eb45b170a93289"
+  digest = "1:4a97aa8ada0b2f865ca69a3a3bc0a2524c24f31c578c995d5c52cecb6913a9dc"
   name = "github.com/openfaas/faas-provider"
   packages = [
     "auth",
-    "httputil",
-    "logs",
     "types",
   ]
   pruneopts = "UT"
-  revision = "db19209aa27f42a9cf6a23448fc2b8c9cc4fbb5d"
-  version = "v0.15.1"
+  revision = "98c25c3919da1ca07bb93fad63fd9715b460963f"
+  version = "012.1"
 
 [[projects]]
-  digest = "1:510ea9e9f5bd484b0faffc28368a61eee6b3a83602a55cb2aa24d4c1b6def0e8"
-  name = "github.com/openfaas/openfaas-cloud"
-  packages = ["sdk"]
+  digest = "1:eb04f69c8991e52eff33c428bd729e04208bf03235be88e4df0d88497c6861b9"
+  name = "github.com/prometheus/client_golang"
+  packages = [
+    "prometheus",
+    "prometheus/internal",
+    "prometheus/promhttp",
+  ]
   pruneopts = "UT"
-  revision = "50cb7b54fc0a3d8e1e3cd94139f6c0b8b55a44ef"
-  version = "0.14.2"
+  revision = "170205fb58decfd011f1550d4cfb737230d7ae4f"
+  version = "v1.1.0"
 
 [[projects]]
-  digest = "1:6baa565fe16f8657cf93469b2b8a6c61a277827734400d27e44d589547297279"
-  name = "github.com/ryanuber/go-glob"
-  packages = ["."]
+  digest = "1:0db23933b8052702d980a3f029149b3f175f7c0eea0cff85b175017d0f2722c0"
+  name = "github.com/prometheus/client_model"
+  packages = ["go"]
   pruneopts = "UT"
-  revision = "51a8f68e6c24dc43f1e371749c89a267de4ebc53"
-  version = "v1.0.0"
+  revision = "7bc5445566f0fe75b15de23e6b93886e982d7bf9"
+  version = "v0.2.0"
 
 [[projects]]
-  digest = "1:d7f1bd887dc650737a421b872ca883059580e9f8314d601f88025df4f4802dce"
-  name = "gopkg.in/yaml.v2"
-  packages = ["."]
+  digest = "1:4407525bde4e6ad9c1f60113d38cbb255d769e0ea506c8cf877db39da7753b3a"
+  name = "github.com/prometheus/common"
+  packages = [
+    "expfmt",
+    "internal/bitbucket.org/ww/goautoneg",
+    "model",
+  ]
   pruneopts = "UT"
-  revision = "0b1645d91e851e735d3e23330303ce81f70adbe3"
-  version = "v2.3.0"
+  revision = "317b7b125e8fddda956d0c9574e5f03f438ed5bc"
+  version = "v0.14.0"
+
+[[projects]]
+  digest = "1:b2268435af85ee1a0fca0e37de4225f78e2d9d8b0b66acde3a29f127634efa87"
+  name = "github.com/prometheus/procfs"
+  packages = [
+    ".",
+    "internal/fs",
+    "internal/util",
+  ]
+  pruneopts = "UT"
+  revision = "9dece15c53cd5e9fbfbd72d5108adcf526a3f486"
+  version = "v0.2.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:6a9357996167c7ef3e91b7b735d5d813d8a7763404dc9076537a8f33b9ba493f"
+  name = "golang.org/x/sys"
+  packages = [
+    "internal/unsafeheader",
+    "unix",
+    "windows",
+  ]
+  pruneopts = "UT"
+  revision = "2da7054afaeb62259b1cc931cdaca533392f2c77"
+
+[[projects]]
+  digest = "1:fd328c5b52e433ea3ffc891bcc4f94469a82bf478558208db2b386aad8a304a1"
+  name = "google.golang.org/protobuf"
+  packages = [
+    "encoding/prototext",
+    "encoding/protowire",
+    "internal/descfmt",
+    "internal/descopts",
+    "internal/detrand",
+    "internal/encoding/defval",
+    "internal/encoding/messageset",
+    "internal/encoding/tag",
+    "internal/encoding/text",
+    "internal/errors",
+    "internal/fieldsort",
+    "internal/filedesc",
+    "internal/filetype",
+    "internal/flags",
+    "internal/genid",
+    "internal/impl",
+    "internal/mapsort",
+    "internal/pragma",
+    "internal/set",
+    "internal/strs",
+    "internal/version",
+    "proto",
+    "reflect/protoreflect",
+    "reflect/protoregistry",
+    "runtime/protoiface",
+    "runtime/protoimpl",
+    "types/known/anypb",
+    "types/known/durationpb",
+    "types/known/timestamppb",
+  ]
+  pruneopts = "UT"
+  revision = "3f7a61f89bb6813f89d981d1870ed68da0b3c3f1"
+  version = "v1.25.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = [
-    "github.com/openfaas/faas-cli/proxy",
-    "github.com/openfaas/openfaas-cloud/sdk",
-  ]
+  input-imports = ["github.com/openfaas/faas/gateway/metrics"]
   solver-name = "gps-cdcl"
   solver-version = 1

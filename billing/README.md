@@ -11,8 +11,8 @@ http://gateway-url:8080/function/billing?function=myFunction
 
 ```json
 {
-    "balance": 10,
-    "remainingInvocations": 8
+    "balance": "10",
+    "remainingInvocations": "8"
 }
 ```
 
@@ -22,8 +22,9 @@ All environment variables are required.
 
 | Environment Variable        | Description |
 | --------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `gateway_url`               | Cluster-internal URL of the OpenFaaS gateway service. |
 | `balances_url`              | Root URI of the [receipt verifier](https://github.com/coilhq/receipt-verifier)'s `balances` API. |
 | `cost_per_unit_invocations` | Cost per `unit_invocations` for function invocations denominated in the host's asset (code and scale). |
 | `unit_invocations`          | :point_up_2: |
 | `bonus_invocations`         | The number of allowed invocations if the function balance is insufficient. |
+| `prometheus_host`           | Host to connect to Prometheus. |
+| `prometheus_port`           | Port to connect to Prometheus. |

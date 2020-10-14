@@ -1,7 +1,6 @@
 package function
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,27 +9,13 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"time"
 
-	"github.com/openfaas/openfaas-cloud/sdk"
-
-	faasSDK "github.com/openfaas/faas-cli/proxy"
-)
-
-type FaaSAuth struct{}
-
-func (auth *FaaSAuth) Set(req *http.Request) error {
-	return sdk.AddBasicAuth(req)
-}
-
-var (
-	timeout   = 3 * time.Second
-	namespace = ""
+	"github.com/openfaas/faas/gateway/metrics"
 )
 
 type FunctionBalance struct {
-	Balance     uint64 `json:"balance"`
-	Invocations uint64 `json:"remainingInvocations"`
+	Balance     uint64 `json:"balance,string"`
+	Invocations uint64 `json:"remainingInvocations,string"`
 }
 
 func NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocations, bonusInvocations uint64) FunctionBalance {
@@ -51,6 +36,14 @@ func NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocat
 	}
 
 	return fnBalance
+}
+
+func calculateInvocationsCost(invocations, costPerUnitInvocations, unitInvocations uint64) uint64 {
+	return uint64(costPerUnitInvocations * invocations / unitInvocations)
+}
+
+func calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations uint64) uint64 {
+	return uint64(balance * unitInvocations / costPerUnitInvocations)
 }
 
 func Handle(req []byte) string {
@@ -81,8 +74,7 @@ func Handle(req []byte) string {
 		log.Fatalf("Couldn't get balance for function %s, %t", fnName, err)
 	}
 
-	gatewayURL := os.Getenv("gateway_url")
-	invocations, err := getFunctionInvocations(fnName, gatewayURL)
+	invocations, err := getFunctionInvocations(fnName)
 	if err != nil {
 		log.Fatalf("Couldn't get invocations for function %s, %t", fnName, err)
 	}
@@ -153,24 +145,42 @@ func getFunctionBalance(function, balancesUrl string) (uint64, error) {
 	return 100, nil
 }
 
-func getFunctionInvocations(function, gatewayURL string) (uint64, error) {
-	client, err := faasSDK.NewClient(&FaaSAuth{}, gatewayURL, nil, &timeout)
+func getFunctionInvocations(function string) (uint64, error) {
+	host := os.Getenv("prometheus_host")
+	envPort := os.Getenv("prometheus_port")
+	port, err := strconv.Atoi(envPort)
 	if err != nil {
-		return 0, err
+		log.Fatalf("Could not convert env-var prometheus_port to int. Env-var value: %s. Error: %t", envPort, err)
 	}
 
-	functionStatus, err := client.GetFunctionInfo(context.Background(), function, namespace)
+	metricsQuery := metrics.NewPrometheusQuery(host, port, &http.Client{})
+
+	queryValue := fmt.Sprintf(
+		`sum(gateway_function_invocation_total{function_name="%s"})`,
+		function,
+	)
+	expr := url.QueryEscape(queryValue)
+
+	response, err := metricsQuery.Fetch(expr)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("Failed to get query metrics for function %s, error: %t", function, err)
 	}
 
-	return uint64(functionStatus.InvocationCount), nil
-}
+	invocationCount := uint64(0)
+	for _, v := range response.Data.Result {
 
-func calculateInvocationsCost(invocations, costPerUnitInvocations, unitInvocations uint64) uint64 {
-	return uint64(costPerUnitInvocations * invocations / unitInvocations)
-}
+		metricValue := v.Value[1]
+		switch metricValue.(type) {
+		case string:
+			f, err := strconv.ParseUint(metricValue.(string), 10, 64)
+			if err != nil {
+				log.Printf("Unable to convert value for metric: %s\n", err)
+				continue
+			}
+			invocationCount += f
+			break
+		}
+	}
 
-func calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations uint64) uint64 {
-	return uint64(balance * unitInvocations / costPerUnitInvocations)
+	return invocationCount, nil
 }

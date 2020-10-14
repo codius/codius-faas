@@ -26,16 +26,8 @@
 
 
 [[constraint]]
-  name = "github.com/openfaas/faas-cli"
-  version = "0.12.14"
-
-[[constraint]]
-  name = "github.com/openfaas/openfaas-cloud"
-  version = "0.14.2"
-
-[[override]]
-  name = "github.com/openfaas/faas-provider"
-  version = "0.15.1"
+  name = "github.com/openfaas/faas"
+  version = "0.18.18"
 
 [prune]
   go-tests = true

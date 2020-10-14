@@ -12,7 +12,8 @@ configMapGenerator:
   namespace: openfaas-fn
   literals:
   - github_app_url=$(GithubAppUrl)
-  - payment_pointer=$system.$(RootDomain)
+  - payment_pointer=$pay.$(RootDomain)
+  - receipts_url=https://pay.$(RootDomain)/receipts
   files:
   - pub-cert.pem
 

@@ -7,3 +7,5 @@ varReference:
   kind: ConfigMap
 - path: data/payment_pointer
   kind: ConfigMap
+- path: data/receipts_url
+  kind: ConfigMap

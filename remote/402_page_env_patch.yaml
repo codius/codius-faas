@@ -11,13 +11,13 @@ spec:
         imagePullPolicy: Always
         env:
         - name: PAYMENT_POINTER
-          value: $system.$(RootDomain)
+          value: $pay.$(RootDomain)
         - name: BALANCE_ID_HEADER
           value: Host
         - name: BALANCE_ID_REGEX
           value: "(?<id>.*).$(RootDomain)"
         - name: RECEIPT_VERIFIER_URI
-          value: https://system.$(RootDomain)
+          value: https://pay.$(RootDomain)
         - name: REQUIRED_BALANCE
           valueFrom:
             configMapKeyRef:

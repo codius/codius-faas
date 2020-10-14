@@ -91,6 +91,15 @@ kubectl patch -n openfaas-fn deploy/system-dashboard -p '
             }
           },
           {
+            "name": "receipts_url",
+            "valueFrom": {
+              "configMapKeyRef": {
+                "key": "receipts_url",
+                "name": "system-dashboard"
+              }
+            }
+          },
+          {
             "name": "payment_pointer",
             "valueFrom": {
               "configMapKeyRef": {

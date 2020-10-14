@@ -2,9 +2,7 @@ bases:
 - ../remote
 
 resources:
-- audit-event-net-policy.yaml
 - gateway-function-ingress.yaml
-- metrics-net-policy.yaml
 - profile.yaml
 - wm-ingress.yaml
 - workload-net-policy.yaml

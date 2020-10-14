@@ -7,8 +7,5 @@ spec:
     spec:
       containers:
       - name: edge-auth
-        image: wilsonianbcoil/edge-auth:pr-1-merge
+        image: wilsonianbcoil/edge-auth
         imagePullPolicy: Always
-        env:
-        - name: gateway_url
-          value: http://gateway.openfaas:8080

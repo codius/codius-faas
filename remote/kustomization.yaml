@@ -7,5 +7,13 @@ bases:
 
 patchesStrategicMerge:
 - 402_page_env_patch.yaml
-- edge_auth_env_patch.yaml
 - receipt_verifier_env_patch.yaml
+- edge_auth_image_patch.yaml
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: edge-auth
+  path: edge_auth_patch.yaml

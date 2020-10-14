@@ -1,0 +1,11 @@
+- op: replace
+  path: "/spec/template/spec/containers/0/env"
+  value:
+  - name: port
+    value: "8080"
+  - name: gateway_url
+    value: http://gateway.openfaas:8080
+- op: remove
+  path: "/spec/template/spec/containers/0/volumeMounts"
+- op: remove
+  path: "/spec/template/spec/volumes"

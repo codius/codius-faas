@@ -4,24 +4,8 @@ set -e
 
 kubectl set env -n openfaas-fn deploy/system-github-event validate_customers=false
 
-kubectl patch -n openfaas deploy/edge-router -p '
-{
-  "spec": {
-    "template": {
-      "spec": {
-        "containers": [{
-          "name": "edge-router",
-          "image": "wilsonianbcoil/edge-router",
-          "imagePullPolicy": "Always",
-          "env": [{
-            "name": "auth_url",
-            "value": "http://edge-auth.openfaas:8080"
-          }]
-        }]
-      }
-    }
-  }
-}'
+kubectl set env -n openfaas deploy/edge-router auth_url=http://edge-auth.openfaas:8080
+
 
 kubectl apply -f https://raw.githubusercontent.com/wilsonianb/faas-netes/master/artifacts/crds/openfaas.com_profiles.yaml
 kubectl patch -n openfaas deploy/gateway -p '
@@ -50,8 +34,6 @@ kubectl create secret generic ingress-basic-auth \
 cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem base/
 
 kubectl apply -k .
-
-kubectl annotate ingress -n openfaas openfaas-ingress nginx.ingress.kubernetes.io/custom-http-errors=402 nginx.ingress.kubernetes.io/default-backend=svc-402-page --overwrite=true
 
 kubectl patch -n openfaas-fn deploy/buildshiprun -p '
 {

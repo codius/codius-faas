@@ -5,6 +5,8 @@
     value: "8080"
   - name: gateway_url
     value: http://gateway.openfaas:8080
+  - name: external_redirect_domain
+    value: https://system.$(RootDomain)
 - op: remove
   path: "/spec/template/spec/containers/0/volumeMounts"
 - op: remove

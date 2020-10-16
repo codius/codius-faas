@@ -14,13 +14,6 @@ spec:
     - "*.$(RootDomain)"
     secretName: wildcard-$(RootDomain)-cert
   rules:
-  - host: '*.$(RootDomain)'
-    http:
-      paths:
-      - path: /_next
-        backend:
-          serviceName: svc-402-page
-          servicePort: 3000
   - host: 'pay.$(RootDomain)'
     http:
       paths:

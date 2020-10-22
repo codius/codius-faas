@@ -60,18 +60,20 @@ func Handle(req []byte) string {
 		if err != nil {
 			log.Fatalf("Couldn't get balance for function %s, %t", fnName, err)
 		}
-		if balance == 0 {
+		useHostPointer := true
+		if balance > 0 {
+			fnPaymentPointer, err := getFunctionPaymentPointer(fnName, gatewayURL)
+			if err == nil {
+				useHostPointer = false
+				resp = RevshareResponse{
+					SpspEndpoint: fnPaymentPointer,
+				}
+			}
+		}
+		if useHostPointer {
 			resp = RevshareResponse{
 				SpspEndpoint: paymentPointer,
 				BalanceId:    fnName,
-			}
-		} else {
-			fnPaymentPointer, err := getFunctionPaymentPointer(fnName, gatewayURL)
-			if err != nil {
-				log.Fatalf("Couldn't get payment pointer for function %s, %t", fnName, err)
-			}
-			resp = RevshareResponse{
-				SpspEndpoint: fnPaymentPointer,
 			}
 		}
 	}

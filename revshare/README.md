@@ -7,12 +7,7 @@ http://gateway-url:8080/function/revshare?function=myFunction
 
 - queries [balance](https://github.com/wilsonianb/wm-ofc/tree/main/billing) function for the function's current balance
 - queries the [gateway](https://github.com/openfaas/faas/blob/master/gateway/README.md) for the total number of function invocations
-- returns a JSON response of type:
-
-| Field Name   | Type   | Description              |
-|--------------|--------|--------------------------|
-| spspEndpoint | string | SPSP endpoint to proxy the SPSP query to |
-| balanceId    | string | (_Optional_) Balance to increment for receipts from this payment submitted to the [`POST /receipts`](https://github.com/coilhq/receipt-verifier##post-receipts) endpoint |
+- returns a string response of the SPSP endpoint to proxy the SPSP query to
 
 ### Environment Variables
 

@@ -1,2 +1,4 @@
 base/pub-cert.pem
 build/
+node_modules/
+template/

@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: receipts
+  namespace: openfaas
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /function/receipt-verifier
+  labels:
+    app: faas-netesd
+spec:
+  tls:
+  - hosts:
+    - "*.$(RootDomain)"
+    secretName: wildcard-$(RootDomain)-cert
+  rules:
+  - host: 'receipts.$(RootDomain)'
+    http:
+      paths:
+      - path: /verify
+        backend:
+          serviceName: gateway
+          servicePort: 8080

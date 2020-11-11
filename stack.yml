@@ -4,9 +4,11 @@ provider:
 
 functions:
   billing:
-    lang: go
+    lang: golang-middleware
     handler: ./billing
     image: wilsonianbcoil/system-billing
+    build_args:
+      GO111MODULE: on
     labels:
       openfaas-cloud: "1"
       role: openfaas-system
@@ -14,9 +16,30 @@ functions:
     environment_file:
       - billing_config.yml
     environment:
-      balances_url: "http://receipt-verifier.openfaas:3000"
+      balances_key_prefix: "balances"
       prometheus_host: prometheus.openfaas
       prometheus_port: 9090
+      redis_uri: "redis.openfaas:6379"
+      write_debug: true
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 32Mi
+      cpu: 50m
+  receipt-verifier:
+    lang: node12
+    handler: ./receipt-verifier
+    image: wilsonianbcoil/receipt-verifier-fn
+    labels:
+      openfaas-cloud: "1"
+      role: openfaas-system
+      com.openfaas.scale.zero: false
+    environment_file:
+      - receipt_verifier_config.yml
+    environment:
+      balances_key_prefix: "balances"
+      receipt_verifier_uri: "http://receipt-verifier.openfaas:3000"
+      redis_uri: "redis.openfaas:6379"
       write_debug: true
     limits:
       memory: 128Mi
@@ -24,9 +47,11 @@ functions:
       memory: 32Mi
       cpu: 50m
   revshare:
-    lang: go
+    lang: golang-middleware
     handler: ./revshare
     image: wilsonianbcoil/system-revshare
+    build_args:
+      GO111MODULE: on
     labels:
       openfaas-cloud: "1"
       role: openfaas-system

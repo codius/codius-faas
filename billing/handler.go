@@ -1,15 +1,16 @@
 package function
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/openfaas/faas/gateway/metrics"
 )
 
@@ -46,9 +47,9 @@ func calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocati
 	return uint64(balance * unitInvocations / costPerUnitInvocations)
 }
 
-func Handle(req []byte) string {
+func Handle(w http.ResponseWriter, r *http.Request) {
 
-	fnName, err := parseFunctionName()
+	fnName, err := parseFunctionName(r)
 	if err != nil {
 		log.Fatalf("couldn't parse function name from query: %t", err)
 	}
@@ -68,8 +69,7 @@ func Handle(req []byte) string {
 		log.Fatal(err)
 	}
 
-	balancesUrl := os.Getenv("balances_url")
-	credit, err := getFunctionBalance(fnName, balancesUrl)
+	credit, err := getFunctionBalance(r.Context(), fnName)
 	if err != nil {
 		log.Fatalf("Couldn't get balance for function %s, %t", fnName, err)
 	}
@@ -84,23 +84,18 @@ func Handle(req []byte) string {
 	if err != nil {
 		log.Fatalf("Couldn't marshal json %t", err)
 	}
-	return string(res)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 }
 
-func parseFunctionName() (functionName string, error error) {
-	if query, exists := os.LookupEnv("Http_Query"); exists {
-		vals, _ := url.ParseQuery(query)
+func parseFunctionName(r *http.Request) (functionName string, error error) {
+	functionNameQuery := r.URL.Query().Get("function")
 
-		functionNameQuery := vals.Get("function")
-
-		if len(functionNameQuery) > 0 {
-			return functionNameQuery, nil
-		}
-
-		return "", fmt.Errorf("there is no `function` inside env var Http_Query")
+	if len(functionNameQuery) > 0 {
+		return functionNameQuery, nil
 	}
 
-	return "", fmt.Errorf("unable to parse Http_Query")
+	return "", fmt.Errorf("there is no `function` query param")
 }
 
 func parseUint64Value(name string) (val uint64, err error) {
@@ -115,32 +110,27 @@ func parseUint64Value(name string) (val uint64, err error) {
 	return val, nil
 }
 
-func getFunctionBalance(function, balancesUrl string) (uint64, error) {
-	if response, err := http.Get(balancesUrl + "/balances/" + function); err != nil {
+func getFunctionBalance(ctx context.Context, function string) (uint64, error) {
+	redis_uri := os.Getenv("redis_uri")
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     redis_uri,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	balances_key_prefix := os.Getenv("balances_key_prefix")
+	val, err := rdb.Get(ctx, balances_key_prefix+"|"+function).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return 0, nil
+		}
 		return 0, err
 	} else {
-		switch response.StatusCode {
-		case http.StatusNotFound:
-			return 0, nil
-		case http.StatusOK:
-			if response.Body == nil {
-				return 0, fmt.Errorf("no balance for function: %s", function)
-			}
-			defer response.Body.Close()
-
-			bodyBytes, err := ioutil.ReadAll(response.Body)
-			if err != nil {
-				return 0, err
-			}
-			// fmt.Println(string(bodyBytes))
-			balance, err := strconv.ParseUint(string(bodyBytes), 10, 64)
-			if err != nil {
-				return 0, fmt.Errorf("Couldn't parse balance to uint64. Value: %s, Error: %t", string(bodyBytes), err)
-			}
-			return balance, nil
-		default:
-			return 0, fmt.Errorf("Unexpected response for function: %s, Code: %s", function, http.StatusText(response.StatusCode))
+		// fmt.Println(val)
+		balance, err := strconv.ParseUint(val, 10, 64)
+		if err != nil {
+			return 0, fmt.Errorf("Couldn't parse balance to uint64. Value: %s, Error: %t", val, err)
 		}
+		return balance, nil
 	}
 	return 100, nil
 }

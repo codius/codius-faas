@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"time"
 
@@ -32,14 +31,9 @@ type FunctionBalance struct {
 	Invocations uint64 `json:"remainingInvocations,string"`
 }
 
-type RevshareResponse struct {
-	BalanceId    string `json:"balanceId,omitempty"`
-	SpspEndpoint string `json:"spspEndpoint"`
-}
+func Handle(w http.ResponseWriter, r *http.Request) {
 
-func Handle(req []byte) string {
-
-	fnName, err := parseFunctionName()
+	fnName, err := parseFunctionName(r)
 	if err != nil {
 		log.Fatalf("couldn't parse function name from query: %t", err)
 	}
@@ -49,11 +43,9 @@ func Handle(req []byte) string {
 		log.Fatal("`payment_pointer` must be set")
 	}
 
-	var resp RevshareResponse
+	var resp string
 	if fnName == ".well-known/pay" {
-		resp = RevshareResponse{
-			SpspEndpoint: paymentPointer,
-		}
+		resp = paymentPointer
 	} else {
 		gatewayURL := os.Getenv("gateway_url")
 		balance, err := getFunctionBalance(fnName, gatewayURL)
@@ -65,40 +57,26 @@ func Handle(req []byte) string {
 			fnPaymentPointer, err := getFunctionPaymentPointer(fnName, gatewayURL)
 			if err == nil {
 				useHostPointer = false
-				resp = RevshareResponse{
-					SpspEndpoint: fnPaymentPointer,
-				}
+				resp = fnPaymentPointer
 			}
 		}
 		if useHostPointer {
-			resp = RevshareResponse{
-				SpspEndpoint: paymentPointer,
-				BalanceId:    fnName,
-			}
+			resp = paymentPointer
 		}
 	}
 
-	res, err := json.Marshal(resp)
-	if err != nil {
-		log.Fatalf("Couldn't marshal json %t", err)
-	}
-	return string(res)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(resp))
 }
 
-func parseFunctionName() (functionName string, error error) {
-	if query, exists := os.LookupEnv("Http_Query"); exists {
-		vals, _ := url.ParseQuery(query)
+func parseFunctionName(r *http.Request) (functionName string, error error) {
+	functionNameQuery := r.URL.Query().Get("id")
 
-		functionNameQuery := vals.Get("id")
-
-		if len(functionNameQuery) > 0 {
-			return functionNameQuery, nil
-		}
-
-		return "", fmt.Errorf("there is no `id` inside env var Http_Query")
+	if len(functionNameQuery) > 0 {
+		return functionNameQuery, nil
 	}
 
-	return "", fmt.Errorf("unable to parse Http_Query")
+	return "", fmt.Errorf("there is no `id` query param")
 }
 
 func getFunctionBalance(function, gatewayURL string) (uint64, error) {

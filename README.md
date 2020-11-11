@@ -36,7 +36,12 @@ Enable [GKE Sandbox](https://cloud.google.com/kubernetes-engine/docs/how-to/sand
 
 #### Web monetization
 
-Update the values in `billing_config.yml`, `config.env` and `revshare_config.yml` for your cluster, then run:
+Update the values in
+- `billing_config.yml`
+- `config.env`
+- `receipt_verifier_config.yml`
+- `revshare_config.yml`
+for your cluster, then run:
 
 ```
 KUBECONFIG=/path/to/your/kubeconfig ./install.sh
@@ -48,6 +53,7 @@ KUBECONFIG=/path/to/your/kubeconfig ./install.sh
 - modified [faas-netes](https://github.com/wilsonianb/faas-netes/)
 - [receipt-verifier](https://github.com/coilhq/receipt-verifier)
 - [billing](https://github.com/wilsonianb/wm-ofc/tree/main/billing) function
+- [receipt-verifier](https://github.com/wilsonianb/wm-ofc/tree/main/receipt-verifier) function
 - [revshare](https://github.com/wilsonianb/wm-ofc/tree/main/revshare) function
 
 ### Function Invocation Flow

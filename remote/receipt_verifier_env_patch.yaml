@@ -9,13 +9,6 @@ spec:
       - name: receipt-verifier
         env:
         - name: REDIS_URI
-          value: redis://127.0.0.1:6379/
+          value: redis://redis.openfaas:6379/
         - name: SPSP_ENDPOINTS_URL
           value: http://gateway.openfaas:8080/function/revshare
-      - name: redis
-        image: redis
-        readinessProbe:
-          exec:
-            command:
-            - redis-cli
-            - ping

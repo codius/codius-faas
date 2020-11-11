@@ -22,9 +22,10 @@ All environment variables are required.
 
 | Environment Variable        | Description |
 | --------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `balances_url`              | Root URI of the [receipt verifier](https://github.com/coilhq/receipt-verifier)'s `balances` API. |
+| `balances_key_prefix`       | Prefix for balances Redis keys. |
 | `cost_per_unit_invocations` | Cost per `unit_invocations` for function invocations denominated in the host's asset (code and scale). |
 | `unit_invocations`          | :point_up_2: |
 | `bonus_invocations`         | The number of allowed invocations if the function balance is insufficient. |
 | `prometheus_host`           | Host to connect to Prometheus. |
 | `prometheus_port`           | Port to connect to Prometheus. |
+| `redis_uri`                 | The URI at which to connect to Redis. |

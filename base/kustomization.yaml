@@ -4,7 +4,10 @@ bases:
 resources:
 - gateway-function-ingress.yaml
 - profile.yaml
-- wm-ingress.yaml
+- receipts-ingress.yaml
+- redis-deployment.yaml
+- redis-service.yaml
+- spsp-ingress.yaml
 - workload-net-policy.yaml
 
 configMapGenerator:
@@ -13,7 +16,7 @@ configMapGenerator:
   literals:
   - github_app_url=$(GithubAppUrl)
   - payment_pointer=$pay.$(RootDomain)
-  - receipts_url=https://pay.$(RootDomain)/receipts
+  - receipts_url=https://receipts.$(RootDomain)/verify
   files:
   - pub-cert.pem
 

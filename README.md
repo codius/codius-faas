@@ -58,4 +58,14 @@ KUBECONFIG=/path/to/your/kubeconfig ./install.sh
 
 ### Function Invocation Flow
 
-![](wm-ofc.png)
+![](docs/codius-faas-invocation.png)
+
+
+### SPSP Flow
+
+![](docs/codius-faas-spsp.png)
+
+
+### Receipts Flow
+
+![](docs/codius-faas-receipts.png)

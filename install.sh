@@ -81,12 +81,8 @@ spec:
 
 export PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
 
-trap 'kill $(jobs -p)' SIGINT SIGTERM EXIT
-
-kubectl port-forward -n openfaas deploy/gateway 31112:8080 &
-sleep 2
-
-export OPENFAAS_URL=http://127.0.0.1:31112
+export $(grep -v '^#' config.env | xargs)
+export OPENFAAS_URL=https://gateway.${root_domain}
 echo -n $PASSWORD | faas-cli login --username admin --password-stdin
 faas-cli template store pull golang-middleware
 faas-cli template store pull node12

@@ -13,9 +13,10 @@ functions:
       openfaas-cloud: "1"
       role: openfaas-system
       com.openfaas.scale.zero: false
-    environment_file:
-      - billing_config.yml
     environment:
+      cost_per_unit_invocations: ${cost_per_unit_invocations:-10}
+      unit_invocations: ${unit_invocations:-1000}
+      bonus_invocations: ${bonus_invocations:-50}
       balances_key_prefix: "balances"
       prometheus_host: prometheus.openfaas
       prometheus_port: 9090
@@ -34,10 +35,9 @@ functions:
       openfaas-cloud: "1"
       role: openfaas-system
       com.openfaas.scale.zero: false
-    environment_file:
-      - receipt_verifier_config.yml
     environment:
       balances_key_prefix: "balances"
+      payment_pointer: ${payment_pointer:-https://wallet/account}
       receipt_verifier_uri: "http://receipt-verifier.openfaas:3000"
       redis_uri: "redis.openfaas:6379"
       write_debug: true
@@ -56,11 +56,10 @@ functions:
       openfaas-cloud: "1"
       role: openfaas-system
       com.openfaas.scale.zero: false
-    environment_file:
-      - revshare_config.yml
     environment:
       basic_auth: true
       gateway_url: "http://gateway.openfaas:8080/"
+      payment_pointer: ${payment_pointer:-https://wallet/account}
       secret_mount_path: /var/openfaas/secrets
       write_debug: true
     secrets:

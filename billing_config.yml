@@ -1,4 +1,0 @@
-environment:
-  cost_per_unit_invocations: 10
-  unit_invocations: 1000
-  bonus_invocations: 50

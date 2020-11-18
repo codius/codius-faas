@@ -36,12 +36,7 @@ Enable [GKE Sandbox](https://cloud.google.com/kubernetes-engine/docs/how-to/sand
 
 #### Web monetization
 
-Update the values in
-- `billing_config.yml`
-- `config.env`
-- `receipt_verifier_config.yml`
-- `revshare_config.yml`
-for your cluster, then run:
+Update the values in `config.env` for your cluster, then run:
 
 ```
 KUBECONFIG=/path/to/your/kubeconfig ./install.sh

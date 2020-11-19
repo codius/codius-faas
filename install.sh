@@ -25,9 +25,9 @@ kubectl create secret generic ingress-basic-auth \
  --from-literal=admin=$PASSWORD --namespace openfaas \
  --dry-run=client -o yaml | kubectl apply -f -
 
-cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem base/
+cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem config/dashboard/
 
-kubectl apply -k .
+kubectl apply -k config/default
 
 kubectl patch -n openfaas-fn deploy/buildshiprun -p '
 spec:

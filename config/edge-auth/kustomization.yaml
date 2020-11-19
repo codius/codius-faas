@@ -1,11 +1,9 @@
 namespace: openfaas
 
 bases:
-- github.com/coilhq/receipt-verifier/config/base?ref=main
 - github.com/wilsonianb/openfaas-cloud/yaml/core
 
 patchesStrategicMerge:
-- receipt_verifier_env_patch.yaml
 - edge_auth_image_patch.yaml
 
 patchesJson6902:

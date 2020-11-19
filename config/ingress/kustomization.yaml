@@ -1,0 +1,7 @@
+resources:
+- gateway-function-ingress.yaml
+- receipts-ingress.yaml
+- spsp-ingress.yaml
+
+configurations:
+- kustomizeconfig.yaml

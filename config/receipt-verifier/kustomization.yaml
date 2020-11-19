@@ -1,0 +1,7 @@
+namespace: openfaas
+
+bases:
+- github.com/coilhq/receipt-verifier/config/base?ref=main
+
+patchesStrategicMerge:
+- receipt_verifier_env_patch.yaml

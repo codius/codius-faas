@@ -1,8 +1,4 @@
 varReference:
-- path: spec/tls/secretName
-  kind: Ingress
-- path: spec/runtimeClassName
-  kind: Profile
 - path: data/github_app_url
   kind: ConfigMap
 - path: data/payment_pointer

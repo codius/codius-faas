@@ -1,5 +1,11 @@
 bases:
-- ./base
+- ../dashboard
+- ../edge-auth
+- ../ingress
+- ../networkpolicy
+- ../profile
+- ../receipt-verifier
+- ../redis
 
 configMapGenerator:
 - name: web-monetization
@@ -28,3 +34,6 @@ vars:
     name: web-monetization
   fieldref:
     fieldpath: data.github_app_url
+
+generatorOptions:
+  disableNameSuffixHash: true

@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: buildshiprun
-        image: wilsonianbcoil/of-buildshiprun
+        image: ghcr.io/codius/ofc-buildshiprun:latest
         imagePullPolicy: Always
         env:
         - name: profile
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: system-dashboard
-        image: wilsonianbcoil/of-cloud-dashboard
+        image: ghcr.io/codius/of-cloud-dashboard:latest
         imagePullPolicy: Always
         env:
         - name: github_app_url

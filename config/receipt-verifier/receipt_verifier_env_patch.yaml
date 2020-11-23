@@ -7,6 +7,8 @@ spec:
     spec:
       containers:
       - name: receipt-verifier
+        image: coilhq/receipt-verifier:cache-id
+        imagePullPolicy: Always
         env:
         - name: REDIS_URI
           value: redis://redis.openfaas:6379/

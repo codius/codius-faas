@@ -86,4 +86,4 @@ export OPENFAAS_URL=https://gateway.${root_domain}
 echo -n $PASSWORD | faas-cli login --username admin --password-stdin
 faas-cli template store pull golang-middleware
 faas-cli template store pull node12
-faas-cli deploy -f ./stack.yml
+TAG=latest faas-cli deploy -f ./stack.yml

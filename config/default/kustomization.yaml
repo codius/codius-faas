@@ -27,13 +27,6 @@ vars:
     name: web-monetization
   fieldref:
     fieldpath: data.runtime_class
-- name: GithubAppUrl
-  objref:
-    apiVersion: v1
-    kind: ConfigMap
-    name: web-monetization
-  fieldref:
-    fieldpath: data.github_app_url
 
 generatorOptions:
   disableNameSuffixHash: true

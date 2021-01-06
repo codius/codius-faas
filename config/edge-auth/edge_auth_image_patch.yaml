@@ -7,5 +7,5 @@ spec:
     spec:
       containers:
       - name: edge-auth
-        image: ghcr.io/codius/edge-auth:latest
+        image: ghcr.io/codius/ofc-edge-auth:latest
         imagePullPolicy: Always

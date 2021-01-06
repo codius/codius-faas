@@ -25,8 +25,6 @@ kubectl create secret generic ingress-basic-auth \
  --from-literal=admin=$PASSWORD --namespace openfaas \
  --dry-run=client -o yaml | kubectl apply -f -
 
-cp $GOPATH/src/github.com/openfaas-incubator/ofc-bootstrap/tmp/pub-cert.pem config/dashboard/
-
 kubectl apply -k config/default
 
 kubectl patch -n openfaas-fn deploy/buildshiprun -p '
@@ -51,11 +49,6 @@ spec:
         image: ghcr.io/codius/of-cloud-dashboard:latest
         imagePullPolicy: Always
         env:
-        - name: github_app_url
-          valueFrom:
-            configMapKeyRef:
-              key: github_app_url
-              name: system-dashboard
         - name: receipts_url
           valueFrom:
             configMapKeyRef:
@@ -66,17 +59,6 @@ spec:
             configMapKeyRef:
               key: payment_pointer
               name: system-dashboard
-        volumeMounts:
-        - name: pubcert
-          mountPath: /home/app/function/dist/pub-cert.pem
-          subPath: pub-cert.pem
-      volumes:
-      - name: pubcert
-        configMap:
-          name: system-dashboard
-          items:
-          - key: pub-cert.pem
-            path: pub-cert.pem
 '
 
 export PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)

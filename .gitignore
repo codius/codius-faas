@@ -1,4 +1,3 @@
-config/dashboard/pub-cert.pem
 build/
 node_modules/
 template/

@@ -1,6 +1,4 @@
 varReference:
-- path: data/github_app_url
-  kind: ConfigMap
 - path: data/payment_pointer
   kind: ConfigMap
 - path: data/receipts_url

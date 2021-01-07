@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: faas-netes
-        image: wilsonianbcoil/faas-netes
+        image: ghcr.io/wilsonianb/faas-netes
         imagePullPolicy: Always
 '
 

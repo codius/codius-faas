@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/openfaas/faas/gateway/metrics"
+	"github.com/openfaas/openfaas-cloud/sdk"
 )
 
 type FunctionBalance struct {
@@ -112,10 +113,11 @@ func parseUint64Value(name string) (val uint64, err error) {
 
 func getFunctionBalance(ctx context.Context, function string) (uint64, error) {
 	redis_uri := os.Getenv("redis_uri")
+	redisPassword, _ := sdk.ReadSecret("redis-password")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     redis_uri,
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Password: redisPassword,
+		DB:       0, // use default DB
 	})
 	balances_key_prefix := os.Getenv("balances_key_prefix")
 	val, err := rdb.Get(ctx, balances_key_prefix+"|"+function).Result()

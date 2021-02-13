@@ -23,18 +23,28 @@ type FunctionBalance struct {
 func NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocations, bonusInvocations uint64) FunctionBalance {
 	fnBalance := FunctionBalance{}
 
+	log.Printf("credit: %d\n", credit)
+	log.Printf("invocations: %d\n", invocations)
+	log.Printf("costPerUnitInvocations: %d\n", costPerUnitInvocations)
+	log.Printf("unitInvocations: %d\n", unitInvocations)
+	log.Printf("bonusInvocations: %d\n", bonusInvocations)
+
 	totalCharge := calculateInvocationsCost(invocations, costPerUnitInvocations, unitInvocations)
-	if credit < totalCharge {
+	log.Printf("totalCharge: %d\n", totalCharge)
+	unpaidAmount := uint64(0)
+	if credit <= totalCharge {
 		fnBalance.Balance = 0
-		remainingInvocations := calculateRemainingInvocations(totalCharge-credit, costPerUnitInvocations, unitInvocations)
-		if bonusInvocations < remainingInvocations {
-			fnBalance.Invocations = 0
-		} else {
-			fnBalance.Invocations = bonusInvocations - remainingInvocations
-		}
+		unpaidAmount = totalCharge - credit
 	} else {
 		fnBalance.Balance = credit - totalCharge
-		fnBalance.Invocations = bonusInvocations + calculateRemainingInvocations(fnBalance.Balance, costPerUnitInvocations, unitInvocations)
+	}
+
+	unpaidInvocations := uint64(unpaidAmount*unitInvocations/costPerUnitInvocations + invocations%unitInvocations)
+	remainingInvocations := bonusInvocations + uint64(fnBalance.Balance*unitInvocations/costPerUnitInvocations)
+	if remainingInvocations < unpaidInvocations {
+		fnBalance.Invocations = 0
+	} else {
+		fnBalance.Invocations = remainingInvocations - unpaidInvocations
 	}
 
 	return fnBalance
@@ -42,10 +52,6 @@ func NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocat
 
 func calculateInvocationsCost(invocations, costPerUnitInvocations, unitInvocations uint64) uint64 {
 	return uint64(costPerUnitInvocations * invocations / unitInvocations)
-}
-
-func calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations uint64) uint64 {
-	return uint64(balance * unitInvocations / costPerUnitInvocations)
 }
 
 func Handle(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +133,7 @@ func getFunctionBalance(ctx context.Context, function string) (uint64, error) {
 		}
 		return 0, err
 	} else {
-		// fmt.Println(val)
+		fmt.Println(val)
 		balance, err := strconv.ParseUint(val, 10, 64)
 		if err != nil {
 			return 0, fmt.Errorf("Couldn't parse balance to uint64. Value: %s, Error: %t", val, err)
@@ -158,10 +164,12 @@ func getFunctionInvocations(function string) (uint64, error) {
 		return 0, fmt.Errorf("Failed to get query metrics for function %s, error: %t", function, err)
 	}
 
+	fmt.Printf("%+v\n", response)
 	invocationCount := uint64(0)
 	for _, v := range response.Data.Result {
 
 		metricValue := v.Value[1]
+		log.Printf("invocations: %s\n", metricValue.(string))
 		switch metricValue.(type) {
 		case string:
 			f, err := strconv.ParseUint(metricValue.(string), 10, 64)
@@ -173,6 +181,8 @@ func getFunctionInvocations(function string) (uint64, error) {
 			break
 		}
 	}
+
+	log.Printf("invocations zero\n")
 
 	return invocationCount, nil
 }

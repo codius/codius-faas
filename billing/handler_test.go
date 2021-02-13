@@ -75,33 +75,47 @@ func Test_calculateInvocationsCost_whenRounded(t *testing.T) {
 	}
 }
 
-func Test_calculateRemainingInvocations_whenExact(t *testing.T) {
-	balance := uint64(1)
-	costPerUnitInvocations := uint64(10)
-	unitInvocations := uint64(1000)
+// func Test_calculateRemainingInvocations_whenExact(t *testing.T) {
+// 	balance := uint64(1)
+// 	costPerUnitInvocations := uint64(10)
+// 	unitInvocations := uint64(1000)
 
-	expected := uint64(100)
+// 	expected := uint64(100)
 
-	got := calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations)
+// 	got := calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations)
 
-	if expected != got {
-		t.Errorf("Expected: %d, got: %d", expected, got)
-	}
-}
+// 	if expected != got {
+// 		t.Errorf("Expected: %d, got: %d", expected, got)
+// 	}
+// }
 
-func Test_calculateRemainingInvocations_whenRounded(t *testing.T) {
-	balance := uint64(1)
-	costPerUnitInvocations := uint64(10)
-	unitInvocations := uint64(1)
+// func Test_calculateRemainingInvocations_whenRounded(t *testing.T) {
+// 	balance := uint64(1)
+// 	costPerUnitInvocations := uint64(10)
+// 	unitInvocations := uint64(1)
 
-	expected := uint64(0)
+// 	expected := uint64(0)
 
-	got := calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations)
+// 	got := calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations)
 
-	if expected != got {
-		t.Errorf("Expected: %d, got: %d", expected, got)
-	}
-}
+// 	if expected != got {
+// 		t.Errorf("Expected: %d, got: %d", expected, got)
+// 	}
+// }
+
+// func Test_calculateRemainingInvocations_whenZero(t *testing.T) {
+// 	balance := uint64(0)
+// 	costPerUnitInvocations := uint64(10)
+// 	unitInvocations := uint64(1000)
+
+// 	expected := uint64(0)
+
+// 	got := calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations)
+
+// 	if expected != got {
+// 		t.Errorf("Expected: %d, got: %d", expected, got)
+// 	}
+// }
 
 func Test_NewFunctionBalance_whenBalancePositive(t *testing.T) {
 	credit := uint64(100)
@@ -112,7 +126,7 @@ func Test_NewFunctionBalance_whenBalancePositive(t *testing.T) {
 
 	expected := FunctionBalance{
 		Balance:     99,
-		Invocations: 9950,
+		Invocations: 9850,
 	}
 
 	got := NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocations, bonusInvocations)
@@ -132,6 +146,25 @@ func Test_NewFunctionBalance_whenBalanceNegative(t *testing.T) {
 	expected := FunctionBalance{
 		Balance:     0,
 		Invocations: 40,
+	}
+
+	got := NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocations, bonusInvocations)
+
+	if expected != got {
+		t.Errorf("Expected: %d, got: %d", expected, got)
+	}
+}
+
+func Test_NewFunctionBalance_whenBalanceZero(t *testing.T) {
+	credit := uint64(0)
+	invocations := uint64(5)
+	costPerUnitInvocations := uint64(10)
+	unitInvocations := uint64(100)
+	bonusInvocations := uint64(50)
+
+	expected := FunctionBalance{
+		Balance:     0,
+		Invocations: 45,
 	}
 
 	got := NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocations, bonusInvocations)

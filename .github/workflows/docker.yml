@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           registry: ghcr.io
       - name: Build function
-        run: TAG=latest REPO=${{ github.repository_owner }} ./faas-cli build --parallel=3 -f ./stack.yml
+        run: TAG=dev REPO=${{ github.repository_owner }} ./faas-cli build --parallel=3 -f ./stack.yml --filter "billing"
       - name: Publish to Registry
-        run: TAG=latest REPO=${{ github.repository_owner }} ./faas-cli push --parallel=3 -f ./stack.yml
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: TAG=dev REPO=${{ github.repository_owner }} ./faas-cli push --parallel=3 -f ./stack.yml --filter "billing"
+        if: github.event_name == 'push' && github.ref == 'refs/heads/log'

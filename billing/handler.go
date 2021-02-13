@@ -24,17 +24,20 @@ func NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocat
 	fnBalance := FunctionBalance{}
 
 	totalCharge := calculateInvocationsCost(invocations, costPerUnitInvocations, unitInvocations)
-	if credit < totalCharge {
+	unpaidAmount := uint64(0)
+	if credit <= totalCharge {
 		fnBalance.Balance = 0
-		remainingInvocations := calculateRemainingInvocations(totalCharge-credit, costPerUnitInvocations, unitInvocations)
-		if bonusInvocations < remainingInvocations {
-			fnBalance.Invocations = 0
-		} else {
-			fnBalance.Invocations = bonusInvocations - remainingInvocations
-		}
+		unpaidAmount = totalCharge - credit
 	} else {
 		fnBalance.Balance = credit - totalCharge
-		fnBalance.Invocations = bonusInvocations + calculateRemainingInvocations(fnBalance.Balance, costPerUnitInvocations, unitInvocations)
+	}
+
+	unpaidInvocations := uint64(unpaidAmount*unitInvocations/costPerUnitInvocations + invocations%unitInvocations)
+	remainingInvocations := bonusInvocations + uint64(fnBalance.Balance*unitInvocations/costPerUnitInvocations)
+	if remainingInvocations < unpaidInvocations {
+		fnBalance.Invocations = 0
+	} else {
+		fnBalance.Invocations = remainingInvocations - unpaidInvocations
 	}
 
 	return fnBalance
@@ -42,10 +45,6 @@ func NewFunctionBalance(credit, invocations, costPerUnitInvocations, unitInvocat
 
 func calculateInvocationsCost(invocations, costPerUnitInvocations, unitInvocations uint64) uint64 {
 	return uint64(costPerUnitInvocations * invocations / unitInvocations)
-}
-
-func calculateRemainingInvocations(balance, costPerUnitInvocations, unitInvocations uint64) uint64 {
-	return uint64(balance * unitInvocations / costPerUnitInvocations)
 }
 
 func Handle(w http.ResponseWriter, r *http.Request) {
